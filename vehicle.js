@@ -1,15 +1,11 @@
-const express = require('express');
-const { decodeVIN, addVehicle, getVehicle } = require('../../src/controllers/vehiclecontrollers');
+const mongoose = require('mongoose');
 
-const router = express.Router();
+const vehicleSchema = new mongoose.Schema({
+    vin: { type: String, required: true, unique: true },
+    manufacturer: String,
+    model: String,
+    year: Number,
+    org: { type: mongoose.Schema.Types.ObjectId, ref: 'Org' }
+});
 
-// Route to decode VIN
-router.get('/decode/:vin', decodeVIN);
-
-// Route to add a vehicle
-router.post('/', addVehicle);
-
-// Route to get vehicle details by VIN
-router.get('/:vin', getVehicle);
-
-module.exports = router;
+module.exports = mongoose.model('Vehicle', vehicleSchema);
